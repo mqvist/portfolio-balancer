@@ -170,9 +170,10 @@ def main(portfolio, target_allocation, stocks_available, money_to_invest):
     print 'Found actions'
     for stock, amount in buys:
         price = pricer.get_price(stock)
+        name = pricer.get_name(stock)
         total_price = amount * price
         percent = 100.0 * float(total_price) / float(money_spent)
-        print ' - Buy %3d x %-30s for %7.2f (%2.0f%%)' % (amount, stock.symbol, total_price, percent)
+        print ' - Buy %3d x %-30s for %7.2f (%2.0f%%)' % (amount, name, total_price, percent)
     print 'Money spent %.2f, remaining %.2f' % (money_spent, money_remaining)
     print 'New portfolio'
     print(new_portfolio)
