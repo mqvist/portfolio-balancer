@@ -159,13 +159,12 @@ def read_invest_file(inifile):
 
 def main(portfolio, target_allocation, stocks_available, money_to_invest):
     pricer = stock_pricer.StockPricer.get_pricer()
-    print 'Current portfolio'
+    print 'Current portfolio as of %s' % datetime.date.today()
     print(portfolio)
     print 'Current asset class balance'
     portfolio.print_asset_class_balance(target_allocation)
     print 'Finding investment actions'
-    buys, new_portfolio, money_remaining = get_next_buys(portfolio, target_allocation, stocks_available,
-                                                     money_to_invest, pricer)
+    buys, new_portfolio, money_remaining = get_next_buys(portfolio, target_allocation, stocks_available, money_to_invest, pricer)
     money_spent = money_to_invest - money_remaining
     print 'Found actions'
     for stock, amount in buys:
@@ -190,5 +189,3 @@ if __name__ == '__main__':
 
     print 'Investing %.2f' % money_to_invest
     portfolio, money_remaining = main(portfolio, target_allocation, available_stocks, money_to_invest)
-
-        

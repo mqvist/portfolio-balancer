@@ -141,11 +141,11 @@ def adjust_investments(investments, target_amount):
     return [Investment(i.fund, Money(round(i.amount - per_investment_excess))) for i in investments]
 
 
-def filter_too_low_investments(investments, min_investment_amount):
+def filter_too_low_investments(investments, min_investment_amount=0):
     valid_investments = []
     for investment in investments:
         if investment.amount < min_investment_amount:
-            print u'---> Rahasto {0} jää alle minimisijoituksen ({1}€ < {2}€)'.format(investment.fund.name, investment.amount, min_investment_amount).encode('utf-8')
+            print u'! Rahasto {0} jää alle minimisijoituksen ({1}€ < {2}€)'.format(investment.fund.name, investment.amount, min_investment_amount).encode('utf-8')
             continue
         valid_investments.append(investment)
     return valid_investments
