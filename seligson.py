@@ -29,9 +29,6 @@ def FeePercent(value):
     return Decimal(value).quantize(Decimal('0.1'))
 
 
-MIN_INVESTMENT_AMOUNT = Money(50)
-
-
 class Portfolio(object):
     def __init__(self):
         self.funds = []
@@ -238,15 +235,24 @@ class Pricer(object):
         return SharePrice(value.replace(',', '.'))
 
 
-def main(portfolio, amount, pricer=Pricer(), investment_strategy=calculate_investments,
-         printer=Printer()):
+def main(portfolio, amount, minimum_investment=None, pricer=Pricer(),
+         investment_strategy=calculate_investments, printer=Printer()):
     printer.print_current_portfolio(portfolio, pricer)
-    investments, new_portfolio = investment_strategy(portfolio, amount, pricer, MIN_INVESTMENT_AMOUNT)
+    investments, new_portfolio = investment_strategy(portfolio, amount, pricer,
+                                                     minimum_investment)
     printer.print_investments(investments)
     printer.print_new_portfolio(new_portfolio, pricer)
 
 
 if __name__ == '__main__':
-    portfolio = read_portfolio(open(sys.argv[1]))
-    amount = Money(sys.argv[2])
-    main(portfolio, amount)
+    from argparse import ArgumentParser
+    parser = ArgumentParser()
+    parser.add_argument('portfolio')
+    parser.add_argument('amount')
+    parser.add_argument('-m', '--minimum-investment', help='minimum investment',
+                        type=Money)
+    args = parser.parse_args()
+    
+    portfolio = read_portfolio(open(args.portfolio))
+    amount = Money(args.amount)
+    main(portfolio, amount, args.minimum_investment)
